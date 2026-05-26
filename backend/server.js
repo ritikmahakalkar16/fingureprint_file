@@ -97,7 +97,7 @@ app.post('/api/register/verify', async (req, res) => {
       expectedChallenge,
       expectedOrigin: origin,
       expectedRPID: rpID,
-      requireUserVerification: true,
+      requireUserVerification: false,
     });
 
     const { verified, registrationInfo } = verification;
@@ -185,7 +185,7 @@ app.post('/api/login/verify', async (req, res) => {
         id: Buffer.from(device.credentialID).toString('base64url'),
         counter: device.counter,
       },
-      requireUserVerification: true,
+      requireUserVerification: false,
     });
 
     const { verified, authenticationInfo } = verification;
