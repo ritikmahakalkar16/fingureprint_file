@@ -52,7 +52,7 @@ app.post('/api/register/generate-options', async (req, res) => {
   }
 
   const userDevices = user.devices.map(dev => ({
-    id: dev.credentialID,
+    id: Buffer.from(dev.credentialID).toString('base64url'),
     type: 'public-key',
     transports: dev.transports,
   }));
@@ -137,7 +137,7 @@ app.post('/api/login/generate-options', async (req, res) => {
   }
 
   const userDevices = user.devices.map(dev => ({
-    id: dev.credentialID,
+    id: Buffer.from(dev.credentialID).toString('base64url'),
     type: 'public-key',
     transports: dev.transports,
   }));
