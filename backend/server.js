@@ -103,11 +103,11 @@ app.post('/api/register/verify', async (req, res) => {
     const { verified, registrationInfo } = verification;
 
     if (verified && registrationInfo) {
-      const { credentialPublicKey, credentialID, counter } = registrationInfo;
+      const { publicKey: credentialPublicKey, id: credentialIDStr, counter } = registrationInfo.credential;
 
       const newDevice = {
         credentialPublicKey,
-        credentialID,
+        credentialID: Buffer.from(credentialIDStr, 'base64url'),
         counter,
         transports: response.response.transports || [],
       };
@@ -180,9 +180,9 @@ app.post('/api/login/verify', async (req, res) => {
       expectedChallenge,
       expectedOrigin: origin,
       expectedRPID: rpID,
-      authenticator: {
-        credentialPublicKey: device.credentialPublicKey,
-        credentialID: device.credentialID,
+      credential: {
+        publicKey: device.credentialPublicKey,
+        id: Buffer.from(device.credentialID).toString('base64url'),
         counter: device.counter,
       },
       requireUserVerification: true,
