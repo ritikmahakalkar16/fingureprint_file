@@ -60,7 +60,7 @@ app.post('/api/register/generate-options', async (req, res) => {
   const options = await generateRegistrationOptions({
     rpName,
     rpID,
-    userID: user.internalId,
+    userID: new Uint8Array(Buffer.from(user.internalId)),
     userName: user.username,
     timeout: 60000,
     attestationType: 'none',
