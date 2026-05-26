@@ -24,13 +24,13 @@ app.use(cors());
 // Serve static frontend files
 app.use(express.static(path.join(__dirname, '../frontend')));
 
-const PORT = process.env.PORT || 3000;
+const PORT = 3000;
 const rpName = 'Fingerprint Auth App';
 const rpID = 'localhost';
 const origin = `http://${rpID}:${PORT}`;
 
 // Connect to MongoDB
-const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://127.0.0.1:27017/fingerprint_db';
+const MONGODB_URI = 'mongodb+srv://ritikmahakalkar16_db_user:9763767457@cluster0.p3hjwwa.mongodb.net/?appName=Cluster0';
 mongoose.connect(MONGODB_URI)
   .then(() => console.log('Connected to MongoDB'))
   .catch(err => console.error('MongoDB connection error:', err));
@@ -69,7 +69,7 @@ app.post('/api/register/generate-options', async (req, res) => {
       residentKey: 'preferred',
       userVerification: 'preferred',
       // To specifically ask for built-in authenticators (like fingerprint)
-      authenticatorAttachment: 'platform', 
+      authenticatorAttachment: 'platform',
     },
     supportedAlgorithmIDs: [-7, -257],
   });
@@ -164,7 +164,7 @@ app.post('/api/login/verify', async (req, res) => {
   }
 
   const expectedChallenge = user.currentChallenge;
-  
+
   // Find the specific device used for login
   const device = user.devices.find(
     dev => Buffer.from(dev.credentialID).toString('base64url') === response.id
@@ -195,10 +195,10 @@ app.post('/api/login/verify', async (req, res) => {
       device.counter = authenticationInfo.newCounter;
       user.currentChallenge = undefined;
       await user.save();
-      
+
       return res.json({ verified: true, username: user.username });
     }
-    
+
     return res.status(400).json({ error: 'Login verification failed' });
   } catch (error) {
     console.error(error);
