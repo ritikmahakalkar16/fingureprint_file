@@ -106,7 +106,7 @@ app.post('/api/register/verify', async (req, res) => {
       const { publicKey: credentialPublicKey, id: credentialIDStr, counter } = registrationInfo.credential;
 
       const newDevice = {
-        credentialPublicKey,
+        credentialPublicKey: Buffer.from(credentialPublicKey),
         credentialID: Buffer.from(credentialIDStr, 'base64url'),
         counter,
         transports: response.response.transports || [],
